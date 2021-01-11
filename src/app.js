@@ -56,9 +56,13 @@ app.delete("/students/:id", async (req, res) => {
 			if (doc == null) {
 				res.sendStatus(404);
 			} else {
-				doc.isDeleted = true;
-				await doc.save();
-				res.sendStatus(200);
+				if (doc.isDeleted === "false") {
+					doc.isDeleted = true;
+					await doc.save();
+					res.sendStatus(200);
+				} else {
+					res.sendStatus(404);
+				}
 			}
 		} catch (err) {
 			res.sendStatus(404);
